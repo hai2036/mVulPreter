@@ -91,6 +91,7 @@ def main():
             label_dict[outfile_new] = ['']  # add outfile_new into label_dict | key: outfile_new; value: []
         else:
             label(func_before, func_after, label_dict, outfile_new)
+        if cnt_1 == 2: break # limit the ammout of function files
 
     with open(pkl_path,'wb') as f: 
         pickle.dump(label_dict, f) # dump the label file as test_label_pkl.pkl
