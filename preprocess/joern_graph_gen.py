@@ -62,7 +62,7 @@ def joern_export(bin, outdir, repr):
     os.environ['out'] = str(out)
     
     if repr == 'pdg':
-        os.system('sh joern-export $bin'+ " --repr " + "pdg" + ' --output $out') # cpg 改成 pdg
+        os.system('sh joern-export $bin'+ " --repr " + "pdg" + ' --out $out') # cpg 改成 pdg
         try:
             pdg_list = os.listdir(out)
             for pdg in pdg_list:
@@ -91,7 +91,7 @@ def joern_export(bin, outdir, repr):
         f.writelines(name+'\n')
 
 def main():
-    joern_path = '/content/joern-cli'
+    joern_path = '/opt/joern/joern-cli'
     os.chdir(joern_path)
 
     
