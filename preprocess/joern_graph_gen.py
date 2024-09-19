@@ -18,8 +18,8 @@ def get_all_file(path):
 
 def parse_options():
     parser = argparse.ArgumentParser(description='Extracting Cpgs.')
-    parser.add_argument('-i ', '--input', help='The dir path of input', type=str, default='/home/all_data_preprocess/4-parse_res/our_data/vul/')
-    parser.add_argument('-o ', '--output', help='The dir path of output', type=str, default='/home/all_data_preprocess/6-json/our_data/6-our-vul/')
+    parser.add_argument('-i ', '--input', help='The dir path of input', type=str, default='')
+    parser.add_argument('-o ', '--output', help='The dir path of output', type=str, default='')
     parser.add_argument('-t ', '--type', help='The type of procedures: parse or export', type=str, default='export')
     parser.add_argument('-r ', '--repr', help='The type of representation: pdg or lineinfo_json', type=str, default='lineinfo_json')
     args = parser.parse_args()
@@ -41,7 +41,7 @@ def joern_parse(file, outdir):
         return
     os.environ['file'] = str(file)
     os.environ['out'] = str(out) #parse后的文件名与source文件名称一致
-    os.system('sh joern-parse $file --language c --out $out')
+    os.system('sh joern-parse $file --language c --output $out')
     with open(record_txt, 'a+') as f:
         f.writelines(name+'\n')
 
@@ -62,7 +62,7 @@ def joern_export(bin, outdir, repr):
     os.environ['out'] = str(out)
     
     if repr == 'pdg':
-        os.system('sh joern-export $bin'+ " --repr " + "pdg" + ' --out $out') # cpg 改成 pdg
+        os.system('sh joern-export $bin'+ " --repr " + "pdg" + ' --output $out') # cpg 改成 pdg
         try:
             pdg_list = os.listdir(out)
             for pdg in pdg_list:
@@ -91,8 +91,10 @@ def joern_export(bin, outdir, repr):
         f.writelines(name+'\n')
 
 def main():
-    joern_path = '/home/joern-cli_v1.1.172'
+    joern_path = '/content/joern-cli'
     os.chdir(joern_path)
+
+    
     args = parse_options()
     type = args.type
     repr = args.repr
@@ -112,11 +114,11 @@ def main():
 
     pool_num = 12
     pool = Pool(pool_num)
-
     if type == 'parse':
         # files = get_all_file(input_path)
         files = glob.glob(input_path + '*.c')
         pool.map(partial(joern_parse, outdir = output_path), files)
+
 
     elif type == 'export':
         bins = glob.glob(input_path + '*.bin')
