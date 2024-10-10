@@ -2,7 +2,7 @@ import os, sys
 import re
 import json
 import glob
-sys.path.append("/home/mVulPreter")
+sys.path.append("/content/mVulPreter")
 from utils_dataset.objects.cpg.function import Function
 from collections import OrderedDict
 from slice.points_get import *

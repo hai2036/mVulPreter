@@ -41,7 +41,7 @@ def joern_parse(file, outdir):
         return
     os.environ['file'] = str(file)
     os.environ['out'] = str(out) #parse后的文件名与source文件名称一致
-    os.system('sh joern-parse $file --language c --output $out')
+    os.system('sh joern-parse $file --language c --out $out')
     with open(record_txt, 'a+') as f:
         f.writelines(name+'\n')
 
@@ -77,13 +77,16 @@ def joern_export(bin, outdir, repr):
         pwd = os.getcwd()
         if out[-4:] != 'json':
             out += '.json'
-        joern_process = subprocess.Popen(["./joern"], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True, encoding='utf-8')
+
+        joern_process = subprocess.Popen(["./joern "], stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True, encoding='utf-8')
         import_cpg_cmd = f"importCpg(\"{bin}\")\r"
-        script_path = f"{pwd}/graph-for-funcs.sc"
+        #script_path = f"{pwd}/graph-for-funcs.sc"
+        script_path = f"/content/mVulPreter/preprocess/graph-for-funcs.sc"
         run_script_cmd = f"cpg.runScript(\"{script_path}\").toString() |> \"{out}\"\r" #json
         cmd = import_cpg_cmd + run_script_cmd
         ret , err = joern_process.communicate(cmd)
         print(ret,err)
+    
 
     len_outdir = len(glob.glob(outdir + '*'))
     print('--------------> len of outdir ', len_outdir)
@@ -91,7 +94,8 @@ def joern_export(bin, outdir, repr):
         f.writelines(name+'\n')
 
 def main():
-    joern_path = '/opt/joern/joern-cli'
+    #joern_path = '/opt/joern/joern-cli'
+    joern_path = '/root/bin/joern/joern-cli'
     os.chdir(joern_path)
 
     

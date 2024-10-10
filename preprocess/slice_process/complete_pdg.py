@@ -20,7 +20,7 @@ def ddg_edge_genearate(ddg_dot_path, idx):
             break
     if flag == 0:
         return False
-    log_path = '/home/mVulPreter/dataset/log.txt'
+    log_path = '/content/mVulPreter/dataset/log.txt'
     # graph =  pydot.graph_from_dot_file(log_path,dot)[0]
     # ddg_edge_list = graph.get_edges()
     try:

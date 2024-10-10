@@ -10,15 +10,15 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/home/mVulPreter/dataset/')
+    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/content/mVulPreter/dataset/')
     args = parser.parse_args()
     dataset_path = args.input_dir
-    json_file = 'joern_json/'
-    ddg_dot_file = 'joern_ddg/'
+    json_file = 'dataset_test_line_json/'
+    ddg_dot_file = 'dataset_test_pdg_dot/'
     
-    pdg_dot_path = 'complete_pdg_dot/'
+    pdg_dot_path = 'dataset_test_pdg_dot_slice'
     sub_graph_path = 'subgraph_json/'
-    label_pkl = 'func_label.pkl'
+    label_pkl = 'test_label_pkl.pkl'
     label_path = dataset_path + label_pkl
     #所有数据
     container = joern_process(dataset_path+json_file)
