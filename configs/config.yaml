@@ -1,0 +1,22 @@
+model_name: cbow
+
+
+data_dir: /content/mVulPreter/dataset/dataset_test_pdg_dot_slice
+train_batch_size: 96
+val_batch_size: 96
+shuffle: True
+
+optimizer: Adam
+learning_rate: 0.0001
+epochs: 5
+train_steps: 
+val_steps: 
+
+checkpoint_frequency: 
+model_dir: 
+
+split_token: NULL
+num_workers: -1
+dataset:
+  token: 
+    vocabulary_size: 100

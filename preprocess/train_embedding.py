@@ -114,8 +114,8 @@ def train_word_embedding(config_path: str):
     """
     # config = cast(DictConfig, config_path.strip())
     config = cast(DictConfig, OmegaConf.load(config_path))
-    cweid = config.dataset.name
-    root = config.data_folder
+    #cweid = config.dataset.name
+    #root = config.data_folder
     #train_json = f"{root}/{cweid}/train.json"
     train_path = "/content/mVulPreter/dataset/dataset_test_pdg_dot_slice"
     #with open(train_json, "r") as f:
@@ -148,7 +148,7 @@ def train_word_embedding(config_path: str):
     print(len(tokens_list))
     num_workers = cpu_count(
     ) if config.num_workers == -1 else config.num_workers
-    model = Word2Vec(sentences=tokens_list, min_count=3, size=256,#vector_size=config.gnn.embed_size,
+    model = Word2Vec(sentences=tokens_list, min_count=3, vector_size=256,#vector_size=config.gnn.embed_size,
                      max_vocab_size=config.dataset.token.vocabulary_size, workers=num_workers, sg=1)
     model.wv.save("/content/mVulPreter/dataset/w2v.wv")
 

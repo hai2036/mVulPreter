@@ -63,10 +63,11 @@ def tokenize_code_line(line):
     return tmp
 
 def joern_to_mvul(dot_pdg, word_vectors, out_path):
-    out_path = out_path + dot_pdg.split("/")[3]+'/'
-    if not os.path.exists(out_path):
-        os.mkdir(out_path)
     name = dot_pdg.split('/')[-1].split('.')[0]
+    #out_path = out_path + name +'/'
+    #if not os.path.exists(out_path):
+    #    os.mkdir(out_path)
+
     out_json = out_path + name + '.json'
     if os.path.exists(out_json):
         print("-----> has been processed :\t", out_json)
@@ -76,25 +77,28 @@ def joern_to_mvul(dot_pdg, word_vectors, out_path):
     node_index = dict()
     node_feature = dict()
     try:
+        print("ALO")
         pdg = nx.drawing.nx_pydot.read_dot(dot_pdg)
-
         if type(pdg) != None:
+            
             for index, node in enumerate(pdg.nodes()):
+               
                 node_index[node] = index
                 label = pdg.nodes[node]['label'][1:-1]
                 code = label.partition(',')[2]
                 feature = np.array([0.0 for i in range(100)])
                 for token in tokenize_code_line(code):
                     if token in word_vectors:
+                        # ERROR TO FIX
                         feature += np.array(word_vectors[token])
                     else:
                         feature += np.array([0.0 for i in range(100)])
                 node_feature[index] = feature
-
+            print("ALO 2")
             nodes_ = []
             for i in range(len(list(pdg.nodes()))):
                 nodes_.append(list(node_feature[i]))
-
+            print("ALO 3")
             edges_ = []
             for item in pdg.adj.items():
                 s = item[0]
@@ -111,7 +115,7 @@ def joern_to_mvul(dot_pdg, word_vectors, out_path):
                             edge_type = 1
                             cdg_flag = 1
                             edges_.append((node_index[s], edge_type, node_index[d]))
-
+            print("ALO 4")
             data = dict()
             data['node_features'] = nodes_
             data['graph'] = edges_
@@ -119,8 +123,10 @@ def joern_to_mvul(dot_pdg, word_vectors, out_path):
             out_json = out_path + name + '.json'
             with open(out_json, 'w') as f:
                 f.write(json.dumps(data))  
+            print("ALO done")    
 
     except:
+        print("ALO error")
         pass
     return 
 
@@ -130,8 +136,8 @@ def main():
     out_path = '/home/pdg_new/'
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/content/mVulPreter/dataset/dataset_test_pdg_dot_slice')
-    parser.add_argument('--output_dir', type=str, help='Output Directory of the parser',default='/content/mVulPreter/dataset/')
+    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/content/mVulPreter/dataset/dataset_test_pdg_dot_slice/')
+    parser.add_argument('--output_dir', type=str, help='Output Directory of the parser',default='/content/mVulPreter/dataset/input_slice_model/')
     args = parser.parse_args()
 
     dir_path_list = [args.input_dir]
@@ -154,6 +160,7 @@ def main():
     #读取词向量模型w2v
     word_vectors = KeyedVectors.load('/content/mVulPreter/dataset/w2v.wv', mmap='r')
     pool = Pool(4)
+
     pool.map(partial(joern_to_mvul, word_vectors=word_vectors, out_path=out_path), dots)
 
 if __name__ == '__main__':
