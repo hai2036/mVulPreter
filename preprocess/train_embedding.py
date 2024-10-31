@@ -117,7 +117,7 @@ def train_word_embedding(config_path: str):
     cweid = config.dataset.name
     root = config.data_folder
     #train_json = f"{root}/{cweid}/train.json"
-    train_path = "/home/mytest/nvd/all_slices"
+    train_path = "/content/mVulPreter/dataset/dataset_test_pdg_dot_slice"
     #with open(train_json, "r") as f:
         #paths = json.load(f)
     paths=glob.glob(train_path+'/*')
@@ -150,7 +150,7 @@ def train_word_embedding(config_path: str):
     ) if config.num_workers == -1 else config.num_workers
     model = Word2Vec(sentences=tokens_list, min_count=3, size=256,#vector_size=config.gnn.embed_size,
                      max_vocab_size=config.dataset.token.vocabulary_size, workers=num_workers, sg=1)
-    model.wv.save("/home/mVulpreter/w2v.wv")
+    model.wv.save("/content/mVulPreter/dataset/w2v.wv")
 
 
 def load_wv(config_path: str):
@@ -171,7 +171,7 @@ def load_wv(config_path: str):
 
 
 if __name__ == '__main__':
-    os.chdir("/home/mytest")
+    os.chdir("/content/mVulPreter/")
     __arg_parser = ArgumentParser()
     __arg_parser.add_argument("-c",
                               "--config",

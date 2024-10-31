@@ -1,7 +1,7 @@
 import os
 from re import I
 from typing import Container
-from .preprocess import *
+from preprocess import *
 from complete_pdg import *
 from slice_op import *
 from json_to_dot import *
@@ -46,7 +46,7 @@ def main():
             _pointer_slice_list = pointer_slice(data_nodes, pointer_node_list)
             points_name = '@pointer'
             generate_sub_json(data_nodes, _pointer_slice_list, dataset_path + sub_graph_path, idx, points_name, label_path)
-
+        
         arr_node_list = get_all_array(data_nodes)
         if arr_node_list != []:
             _arr_slice_list = array_slice(data_nodes, arr_node_list)

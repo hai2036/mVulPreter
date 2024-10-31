@@ -43,7 +43,7 @@ def get_all_array(node_dict):
     return array_node_list
     
 def get_all_sensitiveAPI(node_dict):
-    with open("/content/mVulPreter/slice/sensitive_func.pkl", "rb") as fin:
+    with open("/content/mVulPreter/dataset/test_label_pkl.pkl", "rb") as fin:
         list_sensitive_funcname = pickle.load(fin)
     call_node_list = []
     call_type = "Call"   

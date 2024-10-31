@@ -5,7 +5,7 @@ import glob
 sys.path.append("/content/mVulPreter")
 from utils_dataset.objects.cpg.function import Function
 from collections import OrderedDict
-from slice.points_get import *
+#from slice.points_get import *
 
 
 def graph_indexing(graph):

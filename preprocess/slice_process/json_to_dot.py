@@ -50,6 +50,8 @@ def generate_sub_json(all_data_nodes, _point_slice_list, sub_graph_path, func_na
     for subgraph in _point_slice_list:
         if len(subgraph) == 1:
             continue
+        
+
         edge_record = []
         node_record = []
         data_nodes = subgraph
@@ -68,7 +70,7 @@ def generate_sub_json(all_data_nodes, _point_slice_list, sub_graph_path, func_na
                 subgraph_tmp.remove(node)
         if len(subgraph_tmp) == 1:
             continue # 排除除去头部节点只剩下一个代码行节点的切片
-        
+
         # 开始标注
         if func_name.startswith("1_"):
             novul_flag = 1
@@ -78,10 +80,10 @@ def generate_sub_json(all_data_nodes, _point_slice_list, sub_graph_path, func_na
                     novul_flag = 0
             if novul_flag == 1:
                 func_name = "0_" + func_name[2:]
-            
+        
         if not os.path.exists(sub_graph_file_path):
             os.mkdir(sub_graph_file_path)
-        
+
         graph = pydot.Dot(func_name, graph_type = 'digraph')
         for node in data_nodes:
             node_id = '"' + node.id.split("id=")[-1][:-1] + '"'

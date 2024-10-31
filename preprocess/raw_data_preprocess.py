@@ -54,7 +54,6 @@ def main():
     file_num = 0
     label_dict = {}
     cnt_1 = 0
-
     for index, row in pd_filter.iterrows(): # Loop through each row in the filter dataset
         file_num += 1
         print(str(file_num) + ' / ' + str(file_cnt)) # print out how many row it has done / total row
@@ -65,14 +64,16 @@ def main():
 
         file_name_cnt = 0
         outfile_new = outfile
-        while outfile_new in label_dict.keys(): # Check if the output file is in the label_dict
+        label_key = '1_'+ file_name
+        while label_key in label_dict.keys(): # Check if the output file is in the label_dict
             outfile_new = outfile + '_' + str(file_name_cnt)
             file_name_cnt += 1
+
 
         if not os.path.exists(outfile_new): 
             os.mkdir(outfile_new)
 
-        label_dict[outfile_new] = [] # add outfile_new into label_dict | key: outfile_new; value: []
+        label_dict[label_key] = [] # add outfile_new into label_dict | key: outfile_new; value: []
 
         func_before = row['func_before']
         func_after = row["func_after"]
@@ -88,10 +89,12 @@ def main():
             cnt_1 += 1
 
         if pd.isnull(row['lines_before']):
-            label_dict[outfile_new] = ['']  # add outfile_new into label_dict | key: outfile_new; value: []
+            label_dict[label_key] = ['']  # add outfile_new into label_dict | key: outfile_new; value: []
+
         else:
-            label(func_before, func_after, label_dict, outfile_new)
-        if cnt_1 == 2: break # limit the ammout of function files
+            label(func_before, func_after, label_dict, label_key)
+
+        if file_num == 2: break # limit the ammout of function files
 
     with open(pkl_path,'wb') as f: 
         pickle.dump(label_dict, f) # dump the label file as test_label_pkl.pkl

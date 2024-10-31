@@ -130,8 +130,8 @@ def main():
     out_path = '/home/pdg_new/'
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/home/test1/')
-    parser.add_argument('--output_dir', type=str, help='Output Directory of the parser',default='/home/test2/')
+    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/content/mVulPreter/dataset/dataset_test_pdg_dot_slice')
+    parser.add_argument('--output_dir', type=str, help='Output Directory of the parser',default='/content/mVulPreter/dataset/')
     args = parser.parse_args()
 
     dir_path_list = [args.input_dir]
@@ -152,7 +152,7 @@ def main():
                 new_name = dot
             dots.append(new_name)
     #读取词向量模型w2v
-    word_vectors = KeyedVectors.load('/home/mVulPreter/w2v.wv', mmap='r')
+    word_vectors = KeyedVectors.load('/content/mVulPreter/dataset/w2v.wv', mmap='r')
     pool = Pool(4)
     pool.map(partial(joern_to_mvul, word_vectors=word_vectors, out_path=out_path), dots)
 
