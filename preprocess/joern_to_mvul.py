@@ -77,23 +77,28 @@ def joern_to_mvul(dot_pdg, word_vectors, out_path):
     node_index = dict()
     node_feature = dict()
     try:
-        print("ALO")
-        pdg = nx.drawing.nx_pydot.read_dot(dot_pdg)
+        pdg = nx.drawing.nx_pydot.read_dot(dot_pdg)   
         if type(pdg) != None:
-            
             for index, node in enumerate(pdg.nodes()):
-               
+                print("Index: " + str(index))
                 node_index[node] = index
+                print("1")
+                # ERROR TO FIX
                 label = pdg.nodes[node]['label'][1:-1]
+                print("2")
                 code = label.partition(',')[2]
+                print("3")
+                
                 feature = np.array([0.0 for i in range(100)])
                 for token in tokenize_code_line(code):
                     if token in word_vectors:
-                        # ERROR TO FIX
+                        print(word_vectors[token])
                         feature += np.array(word_vectors[token])
                     else:
                         feature += np.array([0.0 for i in range(100)])
+                print("4")        
                 node_feature[index] = feature
+                print("5")
             print("ALO 2")
             nodes_ = []
             for i in range(len(list(pdg.nodes()))):
