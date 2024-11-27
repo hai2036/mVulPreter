@@ -48,6 +48,7 @@ def normalize(path):
         folder_path = os.path.join(path, _folder)
         file_list = os.listdir(folder_path)
         for _file in file_list:
+            print(' ----> now processing: ',_file)
             pro_one_file(os.path.join(folder_path, _file))
         '''for setfolder in setfolderlist:
             filepath = os.path.join(path, setfolder)

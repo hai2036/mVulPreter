@@ -81,27 +81,27 @@ def joern_to_mvul(dot_pdg, word_vectors, out_path):
         
         if type(pdg) != None:
             for index, node in enumerate(pdg.nodes()):
-                print("Index: " + str(index))
-                print("Node: " + str(node))
+                #print("Index: " + str(index))
+                #print("Node: " + str(node))
                 node_index[node] = index
-                print(pdg.nodes[node])
+                #print(pdg.nodes[node])
                 if not pdg.nodes[node]:
                     label = ""
                 else:
                     label = pdg.nodes[node]['label'][1:-1]
-                print("Label:")
-                print(label)
+                #print("Label:")
+                #print(label)
                 code = label.partition(',')[2]
-                print("Code:")
-                print(code)
+                #print("Code:")
+                #print(code)
                 
                 feature = np.array([0.0 for i in range(100)])
                 for token in tokenize_code_line(code):
                     if token in word_vectors:
-                        print(word_vectors[token])
+                        #print(word_vectors[token])
                         feature += np.array(word_vectors[token])
                     else:
-                        print("0")
+                        #print("0")
                         feature += np.array([0.0 for i in range(100)])
                 node_feature[index] = feature
             nodes_ = []
@@ -119,12 +119,12 @@ def joern_to_mvul(dot_pdg, word_vectors, out_path):
                             edge_type = 0
                             ddg_flag = 1
                             edges_.append((node_index[s], edge_type, node_index[d]))
-                            print(edges_)
+                            #print(edges_)
                         elif 'CDG' in edge[1]['label'] and cdg_flag == 0:
                             edge_type = 1
                             cdg_flag = 1
                             edges_.append((node_index[s], edge_type, node_index[d]))
-                            print(edges_)
+                            #print(edges_)
             data = dict()
             data['node_features'] = nodes_
             data['graph'] = edges_

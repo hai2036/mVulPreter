@@ -46,6 +46,7 @@ if __name__ == '__main__':
         args.graph_embed_size = args.feature_size
 
     model_dir = os.path.join('models', args.dataset)
+    print(model_dir)
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
     input_dir = args.input_dir

@@ -62,12 +62,12 @@ def main():
         file_name = project_name + "_" + hash_vaule 
         outfile = output_path + file_name # the output file location: dataset/dataset_test/file_name
 
-        file_name_cnt = 0
+        #file_name_cnt = 0
         outfile_new = outfile
         label_key = '1_'+ file_name
-        while label_key in label_dict.keys(): # Check if the output file is in the label_dict
-            outfile_new = outfile + '_' + str(file_name_cnt)
-            file_name_cnt += 1
+        #if label_key in label_dict.keys(): # Check if the output file is in the label_dict
+        #    outfile_new = outfile + '_' + str(file_name_cnt)
+        #    file_name_cnt += 1
 
 
         if not os.path.exists(outfile_new): 
@@ -94,7 +94,7 @@ def main():
         else:
             label(func_before, func_after, label_dict, label_key)
 
-        if file_num == 2: break # limit the ammout of function files
+        if file_num == 100: break # limit the ammout of function files
 
     with open(pkl_path,'wb') as f: 
         pickle.dump(label_dict, f) # dump the label file as test_label_pkl.pkl
