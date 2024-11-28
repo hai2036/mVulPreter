@@ -50,6 +50,7 @@ class GGNNBatchGraph(BatchGraph):
     def get_network_inputs(self, cuda=False, device=None):
         features = self.graph.ndata['features']
         edge_types = self.graph.edata['etype']
+
         if cuda:
             self.cuda(device=device)
             return self.graph, features.cuda(device=device), edge_types.cuda(device=device)

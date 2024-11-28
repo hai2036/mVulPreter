@@ -53,39 +53,36 @@ class DataSet:
     def read_dataset(self, train_src:dict, valid_src:dict, test_src:dict):
         debug('Reading Train File! ')
         if len(train_src) != 0:
-            for function_name, slice_path_list in tqdm(train_src.items()):
-                for slice_path in slice_path_list:
-                    with open(slice_path, 'r') as fp:
-                        pdg = json.load(fp)
-                        if len(pdg[self.n_ident]) == 0 or len(pdg[self.n_ident]) < 9:
-                            continue
-                        example = DataEntry(datset=self, num_nodes=len(pdg[self.n_ident]), features=pdg[self.n_ident],
-                                        edges=pdg[self.g_ident], target=pdg[self.l_ident], function_name=function_name, slice_path=slice_path)
-                        self.train_examples.append(example)
+            for function_name, slice_path in tqdm(train_src.items()):
+                with open(slice_path, 'r') as fp:
+                    pdg = json.load(fp)
+                    if len(pdg[self.n_ident]) == 0 or len(pdg[self.n_ident]) < 9:
+                        continue
+                    example = DataEntry(datset=self, num_nodes=len(pdg[self.n_ident]), features=pdg[self.n_ident],
+                                    edges=pdg[self.g_ident], target=pdg[self.l_ident], function_name=function_name, slice_path=slice_path)
+                    self.train_examples.append(example)
         
         debug('Reading Valid File! ')
         if len(valid_src) != 0:
-            for function_name, slice_path_list in tqdm(valid_src.items()):
-                for slice_path in slice_path_list:
-                    with open(slice_path, 'r') as fp:
-                        pdg = json.load(fp)
-                        if len(pdg[self.n_ident]) == 0 or len(pdg[self.n_ident]) < 9:
-                            continue
-                        example = DataEntry(datset=self, num_nodes=len(pdg[self.n_ident]), features=pdg[self.n_ident],
-                                        edges=pdg[self.g_ident], target=pdg[self.l_ident], function_name=function_name, slice_path=slice_path)
-                        self.valid_examples.append(example)
+            for function_name, slice_path in tqdm(valid_src.items()):
+                with open(slice_path, 'r') as fp:
+                    pdg = json.load(fp)
+                    if len(pdg[self.n_ident]) == 0 or len(pdg[self.n_ident]) < 9:
+                        continue
+                    example = DataEntry(datset=self, num_nodes=len(pdg[self.n_ident]), features=pdg[self.n_ident],
+                                    edges=pdg[self.g_ident], target=pdg[self.l_ident], function_name=function_name, slice_path=slice_path)
+                    self.valid_examples.append(example)
         
         debug('Reading Test File! ')
         if len(test_src) != 0:
-            for function_name, slice_path_list in tqdm(test_src.items()):
-                for slice_path in slice_path_list:
-                    with open(slice_path, 'r') as fp:
-                        pdg = json.load(fp)
-                        if len(pdg[self.n_ident]) == 0 or len(pdg[self.n_ident]) < 9:
-                            continue
-                        example = DataEntry(datset=self, num_nodes=len(pdg[self.n_ident]), features=pdg[self.n_ident],
-                                        edges=pdg[self.g_ident], target=pdg[self.l_ident], function_name=function_name, slice_path=slice_path)
-                        self.test_examples.append(example)
+            for function_name, slice_path in tqdm(test_src.items()):
+                with open(slice_path, 'r') as fp:
+                    pdg = json.load(fp)
+                    if len(pdg[self.n_ident]) == 0 or len(pdg[self.n_ident]) < 9:
+                        continue
+                    example = DataEntry(datset=self, num_nodes=len(pdg[self.n_ident]), features=pdg[self.n_ident],
+                                    edges=pdg[self.g_ident], target=pdg[self.l_ident], function_name=function_name, slice_path=slice_path)
+                    self.test_examples.append(example)
 
     # def read_dataset(self, test_src, train_src, valid_src):
     #     if train_src is not None:

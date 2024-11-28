@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_type', type=str, help='Type of the model (mvulModel/ggnn)',
                         choices=['mvulModel', 'ggnn'], default='mvulModel')
     parser.add_argument('--dataset', type=str, help='Name of the dataset for experiment.',default='mvulModel')
-    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/home/mvulpreter/dataset')
+    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/content/mVulPreter/dataset')
     parser.add_argument('--node_tag', type=str, help='Name of the node feature.', default='node_features')
     parser.add_argument('--graph_tag', type=str, help='Name of the graph feature.', default='graph')
     parser.add_argument('--label_tag', type=str, help='Name of the label feature.', default='target')
@@ -46,12 +46,45 @@ if __name__ == '__main__':
         args.graph_embed_size = args.feature_size
 
     model_dir = os.path.join('models', args.dataset)
-    print(model_dir)
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
     input_dir = args.input_dir
+
+    split_dataset_file = '/content/mVulPreter/func_level_model/data_loader/split_dataset_pretrain.json'
+    if not os.path.exists(split_dataset_file):
+        data = dict()
+        train_ = dict()
+        valid_ = dict()
+        test_ = dict()
+        count = 0
+        file_list = os.listdir(input_dir)
+        for _file in file_list:
+            count +=1
+            
+        index = 0
+        for _file in file_list:
+            index+=1
+            function_name = _file
+            path = os.path.join(input_dir, _file)
+            if index in range(0, int(0.8*count+1)):
+                train_[function_name] = path
+               
+            
+            if index in range(int(0.8*count+1), int(0.9*count+1)):
+                valid_[function_name] = path
+
+            if index in range(int(0.9*count+1), count+1):
+                test_[function_name] = path
+
+        data['train'] = train_
+        data['valid'] = valid_
+        data['test'] = test_
+        with open(split_dataset_file, 'w') as f:
+            f.write(json.dumps(data))
+            f.close() 
+    
     if args.task != 'eval':
-        processed_data_path = os.path.join('/home/mVulPreter/slice_level_model/data_loader', 'slice_filter.pkl')
+        processed_data_path = os.path.join('/content/mVulPreter/slice_level_model/data_loader', 'slice_filter.pkl')
         if True and os.path.exists(processed_data_path):
             print('*'*20)
             dataset = joblib.load(open(processed_data_path, 'rb'))
@@ -59,7 +92,7 @@ if __name__ == '__main__':
             debug('Reading already processed data from %s!' % processed_data_path)
         else:
             print('#'*20)
-            with open('/home/mVulPreter/func_level_model/data_loader/split_dataset_pretrain.json', 'r') as fp:
+            with open('/content/mVulPreter/func_level_model/data_loader/split_dataset_pretrain.json', 'r') as fp:
                 data = json.load(fp)
             dataset = DataSet(train_src=data['train'],
                             valid_src=data['valid'],
@@ -70,7 +103,7 @@ if __name__ == '__main__':
             joblib.dump(dataset, file)
             file.close()
     else:
-        processed_data_path = os.path.join('/home/mVulPreter/slice_level_model/data_loader', 'slice_filter.pkl')
+        processed_data_path = os.path.join('/content/mVulPreter/slice_level_model/data_loader', 'slice_filter.pkl')
         if True and os.path.exists(processed_data_path):
             print('*'*20)
             dataset = joblib.load(open(processed_data_path, 'rb'))
@@ -78,7 +111,7 @@ if __name__ == '__main__':
             debug('Reading already processed data from %s!' % processed_data_path)
         else:
             print('#'*20)
-            with open('/home/mVulPreter/func_level_model/data_loader/split_dataset_pretrain.json', 'r') as fp:
+            with open('/content/mVulPreter/func_level_model/data_loader/split_dataset_pretrain.json', 'r') as fp:
                 data = json.load(fp)
             dataset = DataSet(train_src=data['train'],
                             valid_src=data['valid'],
@@ -112,7 +145,7 @@ if __name__ == '__main__':
     debug('lr  : 0.0001')
     debug('weight_decay  : 0.0001')
     if args.task == 'eval':
-        ckpt = torch.load('/home/mVulPreter/slice_level_model/models/008-8-96.03267211201867-74.24242424242425-GGNNmodel_2d.ckpt')
+        ckpt = torch.load('/content/mVulPreter/slice_level_model/models/008-8-96.03267211201867-74.24242424242425-GGNNmodel_2d.ckpt')
         model.load_state_dict(ckpt)
         # eval(model=model, dataset=dataset, max_steps=2000, dev_every=15,
         #     loss_function=loss_function, optimizer=optim,

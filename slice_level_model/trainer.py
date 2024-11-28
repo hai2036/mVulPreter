@@ -115,7 +115,7 @@ def train(model, dataset, max_steps, dev_every, loss_function, optimizer, save_p
                 accc.append(valid_acc)
                 if valid_acc > 70.0 and valid_f1 > 70.0:
                     ckptname = '008-' + str(dataset.batch_size) +'-' + str(valid_acc) + '-' + str(valid_f1) +'-GGNNmodel_2d.ckpt'
-                    _save_ckpt_file = open('/home/mVulPreter/slice_level_model/models/' + ckptname, 'wb')
+                    _save_ckpt_file = open('/content/mVulPreter/slice_level_model/models/' + ckptname, 'wb')
                     torch.save(model.state_dict(), _save_ckpt_file)
                     _save_ckpt_file.close()
                 # unuse
@@ -201,7 +201,7 @@ def filter_slice(model, loss_function, num_batches, data_iter):
 
             slice_scores.extend(predictions)
     
-            with open('/home/mVulPreter/slice_level_model/data_loader/slice_score.txt', 'a') as wp:
+            with open('/content/mVulPreter/slice_level_model/data_loader/slice_score.txt', 'a') as wp:
                 for index, slice_name in enumerate(slice_names):
                     wp.write(f'{slice_name}:{slice_scores[index]}\n')
             
