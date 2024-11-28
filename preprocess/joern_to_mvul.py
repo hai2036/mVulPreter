@@ -78,7 +78,6 @@ def joern_to_mvul(dot_pdg, word_vectors, out_path):
     node_feature = dict()
     try:
         pdg = nx.drawing.nx_pydot.read_dot(dot_pdg)   
-        
         if type(pdg) != None:
             for index, node in enumerate(pdg.nodes()):
                 #print("Index: " + str(index))
@@ -112,17 +111,17 @@ def joern_to_mvul(dot_pdg, word_vectors, out_path):
                 s = item[0]
                 for edge_relation in item[1]:
                     d = edge_relation    
-                    ddg_flag = 0
-                    cdg_flag = 0 
+                    ast_flag = 0
+                    cfg_flag = 0 
                     for edge in item[1]._atlas[edge_relation].items():
-                        if 'DDG' in edge[1]['label'] and ddg_flag == 0:
+                        if 'AST' in edge[1]['label'] and ast_flag == 0:
                             edge_type = 0
-                            ddg_flag = 1
+                            ast_flag = 1
                             edges_.append((node_index[s], edge_type, node_index[d]))
                             #print(edges_)
-                        elif 'CDG' in edge[1]['label'] and cdg_flag == 0:
+                        elif 'CFG' in edge[1]['label'] and cfg_flag == 0:
                             edge_type = 1
-                            cdg_flag = 1
+                            cfg_flag = 1
                             edges_.append((node_index[s], edge_type, node_index[d]))
                             #print(edges_)
             data = dict()
