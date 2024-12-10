@@ -44,10 +44,18 @@ def preprocess(org_path, joern_path):
 def normalize(path):
     #setfolderlist = os.listdir(path)
     foder_list = os.listdir(path)
+    file2_list = os.listdir('/content/mVulPreter/dataset/dataset_test_normal')
+    errorList = ['0_qemu_fa1298c2d623522eda7b4f1f721fcb935abb7360.c','1_qemu_fa1298c2d623522eda7b4f1f721fcb935abb7360.c','1_openssl_1632ef744872edc2aa2a53d487d3e79c965a4ad3.c','0_openssl_1632ef744872edc2aa2a53d487d3e79c965a4ad3.c','1_openssl_af58be768ebb690f78530f796e92b8ae5c9a4401.c','0_openssl_af58be768ebb690f78530f796e92b8ae5c9a4401.c','0_Chrome_697cd7e2ce2535696f1b9e5cfb474cc36a734747.c','1_Chrome_697cd7e2ce2535696f1b9e5cfb474cc36a734747.c',]
     for _folder in foder_list:
         folder_path = os.path.join(path, _folder)
         file_list = os.listdir(folder_path)
         for _file in file_list:
+            if _file in file2_list:
+                print(' ----> has been processed: ',_file)
+                continue
+            if _file in errorList:
+                print("pass")
+                continue
             print(' ----> now processing: ',_file)
             pro_one_file(os.path.join(folder_path, _file))
         '''for setfolder in setfolderlist:

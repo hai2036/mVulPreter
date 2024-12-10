@@ -94,7 +94,7 @@ def main():
         else:
             label(func_before, func_after, label_dict, label_key)
 
-        if file_num == 50: break # limit the ammout of function files
+        #if file_num == 50: break # limit the ammout of function files
 
     with open(pkl_path,'wb') as f: 
         pickle.dump(label_dict, f) # dump the label file as test_label_pkl.pkl

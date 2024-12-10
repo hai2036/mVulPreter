@@ -69,7 +69,6 @@ if __name__ == '__main__':
             if index in range(0, int(0.8*count+1)):
                 train_[function_name] = path
                
-            
             if index in range(int(0.8*count+1), int(0.9*count+1)):
                 valid_[function_name] = path
 
