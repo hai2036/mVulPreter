@@ -43,7 +43,7 @@ def joern_parse(file, outdir):
     os.environ['out'] = str(out) #parse后的文件名与source文件名称一致
     os.system('sh joern-parse $file --language c --out $out')
     with open(record_txt, 'a+') as f:
-        f.writelines(name+'\n')
+        f.writelines(name+'\n')  
 
 def joern_export(bin, outdir, repr):
     record_txt =  os.path.join(outdir,"export_res.txt")
@@ -93,6 +93,8 @@ def joern_export(bin, outdir, repr):
     with open(record_txt, 'a+') as f:
         f.writelines(name+'\n')
 
+
+
 def main():
     #joern_path = '/opt/joern/joern-cli'
     joern_path = '/root/bin/joern/joern-cli'
@@ -102,7 +104,6 @@ def main():
     args = parse_options()
     type = args.type
     repr = args.repr
-
     input_path = args.input
     output_path = args.output
 
@@ -116,7 +117,7 @@ def main():
     else:
         output_path += '/'
 
-    pool_num = 12
+    pool_num = 4
     pool = Pool(pool_num)
     if type == 'parse':
         # files = get_all_file(input_path)
