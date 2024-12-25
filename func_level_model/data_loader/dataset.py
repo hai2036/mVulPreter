@@ -105,68 +105,122 @@ class DataSet:
     def read_dataset(self, test_src: dict, train_src: dict, valid_src: dict):
         debug('Reading Validation File!')
         if len(valid_src.keys()) != 0:
-            for function_name, slice_path_list in tqdm(valid_src.items()):
-                if len(slice_path_list) < 8:
-                    continue
-
+            for function_name, slice_path in tqdm(valid_src.items()):
                 example = PdgEntry(dataset=self, target=function_name[0], name=function_name)
 
-                for slice_path in slice_path_list:
-                    slice_name = slice_path.split('/')[-1].strip()
-                    with open(slice_path, 'r') as fp:
-                        slice_json = json.load(fp)
-                        if self.task == 'train' or self.task == 'eval':
+                slice_name = slice_path.split('/')[-1].strip()
+                with open(slice_path, 'r') as fp:
+                    slice_json = json.load(fp)
+                    if self.task == 'train' or self.task == 'eval':
+                        example.add_pdg(slice_json, slice_name, self.task)
+                    else:
+                        if len(slice_json[self.n_ident]) > 8:
                             example.add_pdg(slice_json, slice_name, self.task)
-                        else:
-                            if len(slice_json[self.n_ident]) > 8:
-                                example.add_pdg(slice_json, slice_name, self.task)
-                        
-                if example.graph_num > 8:
-                    self.valid_examples.append(example)
+                
+                #if example.graph_num > 8:
+                self.valid_examples.append(example)
 
         debug('Reading Test File!')
         if len(test_src.keys()) != 0:
-            for function_name, slice_path_list in tqdm(test_src.items()):
-                if len(slice_path_list) < 8:
-                    continue
-
+            for function_name, slice_path in tqdm(test_src.items()):
+                
                 example = PdgEntry(dataset=self, target=function_name[0], name=function_name)
 
-                for slice_path in slice_path_list:
-                    slice_name = slice_path.split('/')[-1].strip()
-                    with open(slice_path, 'r') as fp:
-                        slice_json = json.load(fp)
-                        if self.task == 'train' or self.task == 'eval':
+                slice_name = slice_path.split('/')[-1].strip()
+                with open(slice_path, 'r') as fp:
+                    slice_json = json.load(fp)
+                    if self.task == 'train' or self.task == 'eval':
+                        example.add_pdg(slice_json, slice_name, self.task)
+                    else:
+                        if len(slice_json[self.n_ident]) > 8:
                             example.add_pdg(slice_json, slice_name, self.task)
-                        else:
-                            if len(slice_json[self.n_ident]) > 8:
-                                example.add_pdg(slice_json, slice_name, self.task)
                         
-                if example.graph_num > 8:
-                    self.test_examples.append(example)
+                #if example.graph_num > 8:
+                self.test_examples.append(example)
 
         debug('Reading Train File!')
         if len(train_src.keys()) != 0:
-            for function_name, slice_path_list in tqdm(train_src.items()):
-                if len(slice_path_list) < 8:
-                    continue
+            for function_name, slice_path in tqdm(train_src.items()):
 
                 example = PdgEntry(dataset=self, target=function_name[0], name=function_name)
 
-                for slice_path in slice_path_list:
-                    slice_name = slice_path.split('/')[-1].strip()
-                    with open(slice_path, 'r') as fp:
-                        slice_json = json.load(fp)
-                        if self.task == 'train' or self.task == 'eval':
+                slice_name = slice_path.split('/')[-1].strip()
+                with open(slice_path, 'r') as fp:
+                    slice_json = json.load(fp)
+                    if self.task == 'train' or self.task == 'eval':
+                        example.add_pdg(slice_json, slice_name, self.task)
+                    else:
+                        if len(slice_json[self.n_ident]) > 8:
                             example.add_pdg(slice_json, slice_name, self.task)
-                        else:
-                            if len(slice_json[self.n_ident]) > 8:
-                                example.add_pdg(slice_json, slice_name, self.task)
                         
-                if example.graph_num > 8:
-                    self.train_examples.append(example)
+                #if example.graph_num > 8:
+                self.train_examples.append(example)
 
-   
+    # def read_dataset(self, test_src: dict, train_src: dict, valid_src: dict):
+    #     debug('Reading Validation File!')
+    #     if len(valid_src.keys()) != 0:
+    #         for function_name, slice_path_list in tqdm(valid_src.items()):
+    #             if len(slice_path_list) < 8:
+    #                 continue
+
+    #             example = PdgEntry(dataset=self, target=function_name[0], name=function_name)
+
+    #             for slice_path in slice_path_list:
+    #                 slice_name = slice_path.split('/')[-1].strip()
+    #                 print("slice path: ")
+    #                 print(slice_path)
+    #                 with open(slice_path, 'r') as fp:
+    #                     slice_json = json.load(fp)
+    #                     if self.task == 'train' or self.task == 'eval':
+    #                         example.add_pdg(slice_json, slice_name, self.task)
+    #                     else:
+    #                         if len(slice_json[self.n_ident]) > 8:
+    #                             example.add_pdg(slice_json, slice_name, self.task)
+                        
+    #             if example.graph_num > 8:
+    #                 self.valid_examples.append(example)
+
+    #     debug('Reading Test File!')
+    #     if len(test_src.keys()) != 0:
+    #         for function_name, slice_path_list in tqdm(test_src.items()):
+    #             if len(slice_path_list) < 8:
+    #                 continue
+
+    #             example = PdgEntry(dataset=self, target=function_name[0], name=function_name)
+
+    #             for slice_path in slice_path_list:
+    #                 slice_name = slice_path.split('/')[-1].strip()
+    #                 with open(slice_path, 'r') as fp:
+    #                     slice_json = json.load(fp)
+    #                     if self.task == 'train' or self.task == 'eval':
+    #                         example.add_pdg(slice_json, slice_name, self.task)
+    #                     else:
+    #                         if len(slice_json[self.n_ident]) > 8:
+    #                             example.add_pdg(slice_json, slice_name, self.task)
+                        
+    #             if example.graph_num > 8:
+    #                 self.test_examples.append(example)
+
+    #     debug('Reading Train File!')
+    #     if len(train_src.keys()) != 0:
+    #         for function_name, slice_path_list in tqdm(train_src.items()):
+    #             if len(slice_path_list) < 8:
+    #                 continue
+
+    #             example = PdgEntry(dataset=self, target=function_name[0], name=function_name)
+
+    #             for slice_path in slice_path_list:
+    #                 slice_name = slice_path.split('/')[-1].strip()
+    #                 with open(slice_path, 'r') as fp:
+    #                     slice_json = json.load(fp)
+    #                     if self.task == 'train' or self.task == 'eval':
+    #                         example.add_pdg(slice_json, slice_name, self.task)
+    #                     else:
+    #                         if len(slice_json[self.n_ident]) > 8:
+    #                             example.add_pdg(slice_json, slice_name, self.task)
+                        
+    #             if example.graph_num > 8:
+    #                 self.train_examples.append(example)
 
     def get_edge_type_number(self, _type):
         if _type not in self.edge_types:

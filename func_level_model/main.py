@@ -16,6 +16,75 @@ from utils import tally_param, debug
 
 import torch.nn.functional as F
 
+def splitData(split_dataset_file, input_dir):
+    if not os.path.exists(split_dataset_file):
+        data = dict()
+        train_ = dict()
+        valid_ = dict()
+        test_ = dict()
+        count = 0
+        file_list = os.listdir(input_dir)
+        for _file in file_list:
+            count +=1
+            
+        index = 0
+        for _file in file_list:
+            index+=1
+            function_name = _file
+            path = os.path.join(input_dir, _file)
+            if index in range(0, int(0.8*count+1)):
+                train_[function_name] = path
+               
+            if index in range(int(0.8*count+1), int(0.9*count+1)):
+                valid_[function_name] = path
+
+            if index in range(int(0.9*count+1), count+1):
+                test_[function_name] = path
+
+        data['train'] = train_
+        data['valid'] = valid_
+        data['test'] = test_
+        with open(split_dataset_file, 'w') as f:
+            f.write(json.dumps(data))
+            f.close() 
+
+def splitData2(split_dataset_file, input_dir):
+    if not os.path.exists(split_dataset_file):
+        data = dict()
+        train_ = dict()
+        valid_ = dict()
+        test_ = dict()
+        count = 0
+        fodler_list = os.listdir(input_dir)
+        for _folder in fodler_list:
+            file_list = os.listdir(_folder)
+            for _file in file_list:
+                count +=1
+            
+        index = 0
+        for _folder in fodler_list:
+            file_list = os.listdir(_folder)
+            for _file in file_list:
+                index+=1
+                function_name = _file
+                path = os.path.join(input_dir, _file)
+                if index in range(0, int(0.8*count+1)):
+                    train_[function_name] = path
+                    
+                if index in range(int(0.8*count+1), int(0.9*count+1)):
+                    valid_[function_name] = path
+
+                if index in range(int(0.9*count+1), count+1):
+                    test_[function_name] = path
+
+        data['train'] = train_
+        data['valid'] = valid_
+        data['test'] = test_
+        with open(split_dataset_file, 'w') as f:
+            f.write(json.dumps(data))
+            f.close() 
+
+
 if __name__ == '__main__':
     seed_num = 1000
     debug("dataset: train: ", str(1000), "test, valid: ",str(100), str(100))
@@ -52,36 +121,11 @@ if __name__ == '__main__':
         os.makedirs(model_dir)
     input_dir = args.input_dir
     split_dataset_file = '/content/mVulPreter/func_level_model/data_loader/split_dataset_GGNN.json'
-    if not os.path.exists(split_dataset_file):
-        data = dict()
-        train_ = dict()
-        valid_ = dict()
-        test_ = dict()
-        count = 0
-        file_list = os.listdir(input_dir)
-        for _file in file_list:
-            count +=1
-            
-        index = 0
-        for _file in file_list:
-            index+=1
-            function_name = _file
-            path = os.path.join(input_dir, _file)
-            if index in range(0, int(0.8*count+1)):
-                train_[function_name] = path
-               
-            if index in range(int(0.8*count+1), int(0.9*count+1)):
-                valid_[function_name] = path
-
-            if index in range(int(0.9*count+1), count+1):
-                test_[function_name] = path
-
-        data['train'] = train_
-        data['valid'] = valid_
-        data['test'] = test_
-        with open(split_dataset_file, 'w') as f:
-            f.write(json.dumps(data))
-            f.close() 
+    if args.task == 'pretrain':
+        splitData(split_dataset_file, input_dir)
+    elif args.task == 'train' or args.task == 'eval':
+        splitData2(split_dataset_file, input_dir)
+   
 
     processed_data_path = os.path.join('/content/mVulPreter/func_level_model/data_loader', 'dataset_GGNN.pkl')
     if True and os.path.exists(processed_data_path):
@@ -148,7 +192,8 @@ if __name__ == '__main__':
 
     elif args.task == 'pretrain':
         model.eval()
-        ckpt = torch.load('/content/mVulPreter/slice_level_model/models/008-8-96.03267211201867-74.24242424242425-GGNNmodel_2d.ckpt')
+        ckpt = torch.load('/content/mVulPreter/models/mvulModel-model.ckpt')
+        #ckpt = torch.load('/content/mVulPreter/slice_level_model/models/008-8-96.03267211201867-74.24242424242425-GGNNmodel_2d.ckpt')
         model.load_state_dict(ckpt)
         dump_ggnn(model, dataset.initialize_train_batch(), dataset.get_next_train_batch, args.data_dir, 'train_GGNN.txt')
         dump_ggnn(model, dataset.initialize_valid_batch(), dataset.get_next_valid_batch, args.data_dir, 'val_GGNN.txt')

@@ -46,8 +46,8 @@ def tally_param(model):
 
 
 def debug(*msg, sep='\t'):
-    logname = '/home/mVulPreter/func_level_model/log.txt'
-    with open(logname,"a") as f:
+    logname = '/content/mVulPreter/func_level_model/log.txt'
+    with open(logname,"a+") as f:
         caller = inspect.stack()[1]
         file_name = caller.filename
         ln = caller.lineno
