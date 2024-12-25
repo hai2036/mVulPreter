@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 def dump_ggnn(model, num_batches, data_iter, path, save_file):
     with torch.no_grad():
         print("Now dump: ", save_file)
-        text = open(os.path.join('/home/mVulPreter/func_level_model/data_loader', save_file), 'w', encoding='utf-8')
+        text = open(os.path.join('/content/mVulPreter/func_level_model/data_loader', save_file), 'w', encoding='utf-8')
         for i in range(num_batches):
             try:
                 print(i, '/', num_batches)
@@ -63,7 +63,7 @@ def read_testdata(dataset):
 
 
 def evaluate(model, loss_function, num_batches, data_iter):
-    fp = open('/home/attn_mvul/gnn1_prediction_res/rate040.json','a+')
+    fp = open('/content/attn_mvul/gnn1_prediction_res/rate040.json','a+')
     model.eval()
     with torch.no_grad():
         _loss = []

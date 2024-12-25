@@ -26,7 +26,7 @@ if __name__ == '__main__':
                         choices=['attn_mvul', 'ggnn', 'mvulModel'], default='mvulModel')
     parser.add_argument('--dataset', type=str, help='Name of the dataset for experiment.',default='mvulModel')
     # deprecate --- input_dir
-    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/home/mvulpreter/dataset_git')
+    parser.add_argument('--input_dir', type=str, help='Input Directory of the parser',default='/content/mvulpreter/dataset_git')
     parser.add_argument('--node_tag', type=str, help='Name of the node feature.', default='node_features')
     parser.add_argument('--graph_tag', type=str, help='Name of the graph feature.', default='graph')
     parser.add_argument('--label_tag', type=str, help='Name of the label feature.', default='target')
@@ -38,8 +38,8 @@ if __name__ == '__main__':
     parser.add_argument('--num_steps', type=int, help='Number of steps in GGNN', default=6)
     parser.add_argument('--batch_size', type=int, help='Batch Size for training', default=8)
     parser.add_argument('--task', type=str, help='train or pretrain', default='train')
-    #TODO: train file path with GGNN /home/mvulpreter/dataset/GGNN
-    parser.add_argument('--data_dir', type=str, help='data_dir is only useful in pretrain', default='/home/mVulPreter/func_level_model/dataset')
+    #TODO: train file path with GGNN /content/mvulpreter/dataset/GGNN
+    parser.add_argument('--data_dir', type=str, help='data_dir is only useful in pretrain', default='/content/mVulPreter/func_level_model/dataset')
     args = parser.parse_args()
 
     if args.feature_size > args.graph_embed_size:
@@ -51,14 +51,46 @@ if __name__ == '__main__':
     if not os.path.exists(model_dir):
         os.makedirs(model_dir)
     input_dir = args.input_dir
-    processed_data_path = os.path.join('/home/mVulPreter/func_level_model/data_loader', 'dataset_GGNN.pkl')
+    split_dataset_file = '/content/mVulPreter/func_level_model/data_loader/split_dataset_GGNN.json'
+    if not os.path.exists(split_dataset_file):
+        data = dict()
+        train_ = dict()
+        valid_ = dict()
+        test_ = dict()
+        count = 0
+        file_list = os.listdir(input_dir)
+        for _file in file_list:
+            count +=1
+            
+        index = 0
+        for _file in file_list:
+            index+=1
+            function_name = _file
+            path = os.path.join(input_dir, _file)
+            if index in range(0, int(0.8*count+1)):
+                train_[function_name] = path
+               
+            if index in range(int(0.8*count+1), int(0.9*count+1)):
+                valid_[function_name] = path
+
+            if index in range(int(0.9*count+1), count+1):
+                test_[function_name] = path
+
+        data['train'] = train_
+        data['valid'] = valid_
+        data['test'] = test_
+        with open(split_dataset_file, 'w') as f:
+            f.write(json.dumps(data))
+            f.close() 
+
+    processed_data_path = os.path.join('/content/mVulPreter/func_level_model/data_loader', 'dataset_GGNN.pkl')
     if True and os.path.exists(processed_data_path):
         print("#"*20)
         dataset = joblib.load(open(processed_data_path, 'rb'))
         read_testdata(dataset)
         debug('Reading already processed data from %s!' % processed_data_path)
     else:
-        with open('/home/mVulPreter/func_level_model/data_loader/split_dataset_GGNN.json', 'r') as fp:
+        with open('/content/mVulPreter/func_level_model/data_loader/split_dataset_GGNN.json', 'r') as fp:
             data = json.load(fp)
         if args.task == 'eval':
             print("$"*20)
@@ -116,7 +148,7 @@ if __name__ == '__main__':
 
     elif args.task == 'pretrain':
         model.eval()
-        ckpt = torch.load('/home/mVulPreter/slice_level_model/models/008-8-96.03267211201867-74.24242424242425-GGNNmodel_2d.ckpt')
+        ckpt = torch.load('/content/mVulPreter/slice_level_model/models/008-8-96.03267211201867-74.24242424242425-GGNNmodel_2d.ckpt')
         model.load_state_dict(ckpt)
         dump_ggnn(model, dataset.initialize_train_batch(), dataset.get_next_train_batch, args.data_dir, 'train_GGNN.txt')
         dump_ggnn(model, dataset.initialize_valid_batch(), dataset.get_next_valid_batch, args.data_dir, 'val_GGNN.txt')
@@ -124,9 +156,9 @@ if __name__ == '__main__':
 
     elif args.task == 'eval':
         model.eval()
-        ckpt = torch.load('/home/mVulPreter/func_level_model/models/mvulModel/GGNNSumModel-model.ckpt')
+        ckpt = torch.load('/content/mVulPreter/func_level_model/models/mvulModel/GGNNSumModel-model.ckpt')
         model.load_state_dict(ckpt)
         acc, pr, rc, f1 = evaluate_metrics(model, loss_function, dataset.initialize_test_batch(), dataset.get_next_test_batch)
-        save_path = '/home/mVulPreter/func_level_model/models/mvulModel/GGNNSumModel-model.ckpt\n'
+        save_path = '/content/mVulPreter/func_level_model/models/mvulModel/GGNNSumModel-model.ckpt\n'
         debug('%s\tTest Accuracy: %0.2f\tPrecision: %0.2f\tRecall: %0.2f\tF1: %0.2f' % (save_path, acc, pr, rc, f1))
         debug('=' * 100)

@@ -5,7 +5,6 @@ from multiprocessing import Pool
 from functools import partial
 import subprocess
 
-
 def get_all_file(path):
     path = path[0]
     file_list = []
@@ -43,9 +42,10 @@ def joern_parse(file, outdir):
     os.environ['out'] = str(out) #parse后的文件名与source文件名称一致
     os.system('sh joern-parse $file --language c --out $out')
     with open(record_txt, 'a+') as f:
-        f.writelines(name+'\n')  
+        f.writelines(name+'\n')   
 
 def joern_export(bin, outdir, repr):
+    global file_count
     record_txt =  os.path.join(outdir,"export_res.txt")
     if not os.path.exists(record_txt):
         os.system("touch "+record_txt)
@@ -92,6 +92,7 @@ def joern_export(bin, outdir, repr):
     print('--------------> len of outdir ', len_outdir)
     with open(record_txt, 'a+') as f:
         f.writelines(name+'\n')
+
 
 
 

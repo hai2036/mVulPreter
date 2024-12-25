@@ -48,6 +48,7 @@ def generate_sub_json(all_data_nodes, _point_slice_list, sub_graph_path, func_na
     iter = 0
     flag = 0
     for subgraph in _point_slice_list:
+        print("ALO 1")    
         if len(subgraph) == 1:
             continue
         
@@ -140,6 +141,7 @@ def generate_sub_json(all_data_nodes, _point_slice_list, sub_graph_path, func_na
         if os.path.exists(dot_path):
             return
         graph.write_raw(dot_path)
+        print("ALO ALO")
         flag = 1
         iter += 1
     if flag == 1:

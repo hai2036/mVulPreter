@@ -144,14 +144,18 @@ if __name__ == '__main__':
     debug('lr  : 0.0001')
     debug('weight_decay  : 0.0001')
     if args.task == 'eval':
-        ckpt = torch.load('/content/mVulPreter/slice_level_model/models/008-8-96.03267211201867-74.24242424242425-GGNNmodel_2d.ckpt')
+        ckpt = torch.load('/content/mVulPreter/models/mvulModel-model.ckpt')
+        #ckpt = torch.load('/content/mVulPreter/slice_level_model/models/008-8-96.03267211201867-74.24242424242425-GGNNmodel_2d.ckpt')
+        print("Alo")
         model.load_state_dict(ckpt)
         # eval(model=model, dataset=dataset, max_steps=2000, dev_every=15,
         #     loss_function=loss_function, optimizer=optim,
         #     save_path=model_dir , max_patience=100, log_every=None)
+        print("Alo 2")
         filter_slice(model, loss_function, dataset.initialize_train_batch(), dataset.get_next_train_batch)
         filter_slice(model, loss_function, dataset.initialize_valid_batch(), dataset.get_next_valid_batch)
         filter_slice(model, loss_function, dataset.initialize_test_batch(), dataset.get_next_test_batch)
+        print("Alo 3")
     else:
         train(model=model, dataset=dataset, max_steps=1000, dev_every=50,
             loss_function=loss_function, optimizer=optim,

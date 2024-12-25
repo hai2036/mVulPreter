@@ -42,27 +42,39 @@ def main():
 
         generate_complete_json(data_nodes, dataset_path + pdg_dot_path, idx)
         pointer_node_list = get_pointers_node(data_nodes)
+        print("pointer node list")
+        print(pointer_node_list)
         if pointer_node_list != []:
             _pointer_slice_list = pointer_slice(data_nodes, pointer_node_list)
             points_name = '@pointer'
+            print(_pointer_slice_list)
             generate_sub_json(data_nodes, _pointer_slice_list, dataset_path + sub_graph_path, idx, points_name, label_path)
         
         arr_node_list = get_all_array(data_nodes)
+        print("arr_node_list")
+        print(arr_node_list)
         if arr_node_list != []:
             _arr_slice_list = array_slice(data_nodes, arr_node_list)
             points_name = '@array'
+            print(_arr_slice_list)
             generate_sub_json(data_nodes, _arr_slice_list, dataset_path + sub_graph_path, idx, points_name, label_path)
 
         integer_node_list = get_all_integeroverflow_point(data_nodes)
+        print("integer_node_list")
+        print(integer_node_list)
         if integer_node_list != []:
             _integer_slice_list = inte_slice(data_nodes, integer_node_list)
             points_name = '@integer'
+            print(_integer_slice_list)
             generate_sub_json(data_nodes, _integer_slice_list, dataset_path + sub_graph_path, idx, points_name, label_path)
 
         call_node_list = get_all_sensitiveAPI(data_nodes)
+        print("call_node_list")
+        print(call_node_list)
         if call_node_list != []:
             _call_slice_list = call_slice(data_nodes, call_node_list)
             points_name = '@API'
+            print(_call_slice_list)
             generate_sub_json(data_nodes, _call_slice_list, dataset_path + sub_graph_path, idx, points_name, label_path)            
 
 if __name__ == '__main__':
