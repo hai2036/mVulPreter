@@ -48,7 +48,7 @@ def splitData(split_dataset_file, input_dir):
             f.write(json.dumps(data))
             f.close() 
 
-def splitData2(split_dataset_file, input_dir):
+def splitData2(split_dataset_file, input_dir, data_dir):
     if not os.path.exists(split_dataset_file):
         data = dict()
         train_ = dict()
@@ -57,17 +57,17 @@ def splitData2(split_dataset_file, input_dir):
         count = 0
         fodler_list = os.listdir(input_dir)
         for _folder in fodler_list:
-            file_list = os.listdir(_folder)
+            file_list = os.listdir(os.path.join(data_dir,_folder))
             for _file in file_list:
                 count +=1
             
         index = 0
         for _folder in fodler_list:
-            file_list = os.listdir(_folder)
+            file_list = os.listdir(os.path.join(data_dir,_folder))
             for _file in file_list:
                 index+=1
                 function_name = _file
-                path = os.path.join(input_dir, _file)
+                path = os.path.join(data_dir,_folder, _file)
                 if index in range(0, int(0.8*count+1)):
                     train_[function_name] = path
                     
@@ -124,7 +124,7 @@ if __name__ == '__main__':
     if args.task == 'pretrain':
         splitData(split_dataset_file, input_dir)
     elif args.task == 'train' or args.task == 'eval':
-        splitData2(split_dataset_file, input_dir)
+        splitData2(split_dataset_file, input_dir, args.data_dir)
    
 
     processed_data_path = os.path.join('/content/mVulPreter/func_level_model/data_loader', 'dataset_GGNN.pkl')

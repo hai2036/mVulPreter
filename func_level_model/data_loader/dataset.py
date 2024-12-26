@@ -266,7 +266,7 @@ class DataSet:
             for i in ids:
                 max_graph_num = max(max_graph_num,entries[i].graph_num)
             taken_entries = [entries[i].padding_pdg(max_graph_num) for i in ids]
-        # labels = [int(e.name[0]) for e in taken_entries]
+        #labels = [int(e.name[0]) for e in taken_entries]
         labels = [int(e.target) for e in taken_entries]
         return taken_entries, labels
 

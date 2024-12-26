@@ -33,7 +33,9 @@ def dump_ggnn(model, num_batches, data_iter, path, save_file):
                         if sub_pdg.name == None:
                             sub_pdg.name = str(random.randint(0,100))
                         #print('sub_pdg.name:' + sub_pdg.name)
-                        file_path = os.path.join(path, pdg.name , 'GGNN_' + sub_pdg.name)
+                        temp_path = os.path.join(path, pdg.name)
+                        temp_path = str(temp_path).removesuffix('.json')
+                        file_path = os.path.join(temp_path , sub_pdg.name)
                         output, feature = model.cal_ggnn(sub_pdg.graph, cuda=True)
                         output = output.detach().cpu().tolist()
                         feature = feature.detach().cpu().tolist()
@@ -41,8 +43,10 @@ def dump_ggnn(model, num_batches, data_iter, path, save_file):
                             'output':output,
                             'feature':feature
                         }
-                        if not os.path.exists(os.path.join(path, pdg.name)):
-                            os.makedirs(os.path.join(path, pdg.name))
+                        
+                        
+                        if not os.path.exists(temp_path):
+                            os.makedirs(temp_path)
                         with open(file_path, 'w', encoding='utf-8') as fp:
                             json.dump(json_dict, fp)
             except:
